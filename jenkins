@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    environment {
+        // Set the GCS bucket name and the path where you want to store the WAR file
+        GCS_BUCKET_NAME = 'ssdevbucket'
+        GCS_PATH = '/'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from GitHub
+                git branch: 'main', credentialsId: 'git', url: 'https://github.com/sourabha-srai/devops-project.git'
+            }
+        }
+
+        stage('Build') {
+            agent {
+                // Specify the label of the Jenkins agent configured for Maven builds
+                label 'mvn'
+            }
+
+            steps {
+                // Build the Maven project
+                script {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                // Set the WAR file path
+                def warFilePath = 'target/*.war'
+
+                // Copy the WAR file to the GCS bucket
+                sh "gsutil cp ${warFilePath} gs://${GCS_BUCKET_NAME}/${GCS_PATH}/"
+            }
+        }
+
+        always {
+            // Clean up workspace on both master and agent
+            cleanWs()
+        }
+    }
+}
