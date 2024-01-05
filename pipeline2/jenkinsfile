@@ -8,7 +8,7 @@ pipeline {
         DOCKERFILE_PATH = 'path/to/Dockerfile'  // Path to Dockerfile in GitHub repository
         IMAGE_NAME = 'test-image:latest'
 		DOCKER_HUB_USER = 'sourabhashettypapt666'
-		DOCKER_HUB_PASSWORD} = 'shetty@123'
+		DOCKER_HUB_PASSWORD = 'shetty@123'
 		DOCKER_HUB_REGISTRY = 'devpipeline'
     }
 
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Make sure Docker is installed on the Jenkins agent
-                    sh "docker build -t ${IMAGE_NAME} -f  ."
+                    sh "docker build -t ${IMAGE_NAME} ."
                 }
             }
         }
