@@ -35,6 +35,7 @@ pipeline {
             steps {
                 script {
                     // Make sure Docker is installed on the Jenkins agent
+                    sh "docker stop \$(docker ps -a -q) && docker container prune"
                     sh "docker rmi -f \$(docker images -aq)"
                     sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
                 }
@@ -46,7 +47,6 @@ pipeline {
                 script {
                        sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
                        sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}"
-                       sh "docker stop \$(docker ps -a -q) && docker container prune"
                        sh "docker run -p 8086:8080 -d ${DOCKER_HUB_USER}/${IMAGE_NAME}"
                     }
                 }
