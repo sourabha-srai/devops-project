@@ -6,7 +6,7 @@ pipeline {
         GCR_REGISTRY = "gcr.io/${GCP_PROJECT}"
         GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN'
         DOCKERFILE_PATH = 'path/to/Dockerfile'  // Path to Dockerfile in GitHub repository
-        IMAGE_NAME = 'test-image:latest'
+        IMAGE_NAME = 'devpipeline:latest'
 		DOCKER_HUB_USER = 'sourabhashettypapt666'
 		DOCKER_HUB_PASSWORD = 'shetty@123'
 		DOCKER_HUB_REGISTRY = 'devpipeline'
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Make sure Docker is installed on the Jenkins agent
-                    sh "docker build -t ${IMAGE_NAME} ."
+                    sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
                 }
             }
         }
@@ -41,8 +41,8 @@ pipeline {
         stage('Push Docker image to GCR') {
             steps {
                 script {
-                       sh "docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASSWORD} ${DOCKER_HUB_REGISTRY}"
-                       sh "docker push ${DOCKER_HUB_REGISTRY}/${DOCKER_HUB_USER}/${IMAGE_NAME}"
+                       sh "docker login -u ${DOCKER_HUB_USER} -p "shetty@123" docker.io"
+                       sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}"
                     }
                 }
             }
