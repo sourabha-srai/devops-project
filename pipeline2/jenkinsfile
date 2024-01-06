@@ -41,7 +41,7 @@ pipeline {
         stage('Push Docker image to GCR') {
             steps {
                 script {
-                       sh "docker login -u ${DOCKER_HUB_USER} -p "shetty@123" docker.io"
+                       sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
                        sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}"
                     }
                 }
