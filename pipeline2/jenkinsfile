@@ -43,6 +43,7 @@ pipeline {
                 script {
                        sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
                        sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}"
+		       sh "docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)"
                        sh "docker run -p 8086:8080 -d ${DOCKER_HUB_USER}/${IMAGE_NAME}"
                     }
                 }
