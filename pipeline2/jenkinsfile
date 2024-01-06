@@ -16,7 +16,8 @@ pipeline {
         stage('Pull WAR file from GCS') {
             steps {
                 script {
-                    sh 'rm -rf /var/lib/jenkins/workspace/pipelineno2/'
+                    sh 'rm -rf /var/lib/jenkins/workspace/pipelineno2/Dockerfile'
+                    sh 'rm -rf /var/lib/jenkins/workspace/pipelineno2/webapp.war'
                     sh "gsutil cp -r gs://ssdevbucket/*.war /var/lib/jenkins/workspace/pipelineno2/"
                 }
             }
