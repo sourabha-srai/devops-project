@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     // Make sure Docker is installed on the Jenkins agent
-                    sh "docker rmi -f \$(docker images -aq)
+                    sh "docker rmi -f \$(docker images -aq)"
                     sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
                 }
             }
