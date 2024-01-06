@@ -16,7 +16,7 @@ pipeline {
         stage('Pull WAR file from GCS') {
             steps {
                 script {
-                    sh "gsutil cp -r gs://ssdevbucket/ /var/lib/jenkins/workspace/pipelineno2/"
+                    sh "gsutil cp -r gs://ssdevbucket/*.war ."
                 }
             }
         }
