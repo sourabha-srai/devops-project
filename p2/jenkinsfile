@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'devproject:latest'
+        IMAGE_NAME = 'devproject'
 		DOCKER_HUB_USER = 'sourabhashettypapt666'
 		DOCKER_HUB_PASSWORD = 'shetty@123'
 		DOCKER_HUB_REGISTRY = 'devproject'
