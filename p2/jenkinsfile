@@ -16,7 +16,7 @@ pipeline {
         stage('Pull WAR file from bucket') {
             steps {
                 script {
-                    sh "gsutil cp -r gs://p2bucket/*.war /var/lib/jenkins/workspace/test1/"
+                    sh "gsutil cp -r gs://p2bucket/*.war /var/lib/jenkins/workspace/p2pipeline/"
                 }
             }
         }
