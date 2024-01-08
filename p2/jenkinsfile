@@ -1,1 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        GCP_PROJECT = 'YOUR_GCP_PROJECT'
+        GCR_REGISTRY = "gcr.io/${GCP_PROJECT}"
+        GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN'
+        DOCKERFILE_PATH = 'path/to/Dockerfile'  // Path to Dockerfile in GitHub repository
+        IMAGE_NAME = 'devpipeline:latest'
+		DOCKER_HUB_USER = 'sourabhashettypapt666'
+		DOCKER_HUB_PASSWORD = 'shetty@123'
+		DOCKER_HUB_REGISTRY = 'devproject'
+    }
+
+    stages {
+        stage('Pull WAR file from bucket') {
+            steps {
+                script {
+                    sh "gsutil cp -r gs://p2bucket/*.war /var/lib/jenkins/workspace/test1/"
+                }
+            }
+        }
+
+        stage('Clone GitHub repository') {
+            steps {
+                script {
+                    git branch: 'main', url: 'https://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@github.com/sourabha-srai/devops-project.git'
+                }
+            }
+        }
+
+        stage('Build Docker image') {
+            steps {
+                script {
+                    // Make sure Docker is installed on the Jenkins agent
+                    sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
+                }
+            }
+        }
+
+        stage('Push Docker image to GCR') {
+            steps {
+                script {
+                       sh "docker run -p 8086:8080 -d ${DOCKER_HUB_USER}/${IMAGE_NAME}"
+                    }
+                }
+            }
+        }
+    }
 
