@@ -6,7 +6,7 @@ pipeline {
         GCR_REGISTRY = "gcr.io/${GCP_PROJECT}"
         GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN'
         DOCKERFILE_PATH = 'path/to/Dockerfile'  // Path to Dockerfile in GitHub repository
-        IMAGE_NAME = 'devpipeline:latest'
+        IMAGE_NAME = 'devproject:latest'
 		DOCKER_HUB_USER = 'sourabhashettypapt666'
 		DOCKER_HUB_PASSWORD = 'shetty@123'
 		DOCKER_HUB_REGISTRY = 'devproject'
