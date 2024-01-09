@@ -58,14 +58,17 @@ pipeline {
 
 
         stage('Push Docker image to GCR') {
-            steps {
-                script {
-	               sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
-                       sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}"
-                       sh "docker run -p 8086:8080 -d ${DOCKER_HUB_USER}/${IMAGE_NAME}"
-                    }
-                }
-            }
+    steps {
+        script {
+            // Login to Docker Hub
+            sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
+
+            // Tag the Docker image with the build number
+            sh "docker tag ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ${DOCKER_HUB_USER}/${IMAGE_NAME}:latest"
+
+            // Push the Docker image
+            sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}:latest"
         }
     }
+}
 
