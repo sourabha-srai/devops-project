@@ -33,14 +33,17 @@ pipeline {
             // Make sure Docker is installed on the Jenkins agent
             try {
                 // Stop all running containers
-                sh "docker stop \$(docker ps -q)"
-                
+                def runningContainers = sh(script: 'docker ps -q', returnStdout: true).trim()
+                if (runningContainers) {
+                    sh "docker stop ${runningContainers}"
+                }
+
                 // Remove all stopped containers
                 sh "docker container prune -f"
-                
+
                 // Remove all images
                 sh "docker rmi -f \$(docker images -q)"
-                
+
                 // Build the Docker image
                 sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
             } catch (Exception e) {
@@ -50,7 +53,6 @@ pipeline {
         }
     }
 }
-
 
 
         stage('Push Docker image to GCR') {
