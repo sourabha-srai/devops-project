@@ -43,7 +43,7 @@ pipeline {
 	                sh "docker stop \$(docker ps -a -q) && docker container prune -f"
 	            }
 	
-	            sh "docker rmi -f \$(docker images -aq)"
+	            sh "docker image prune -f"
 	            sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
 	        }
 	    }
