@@ -27,7 +27,7 @@ pipeline {
             }
         }
 
-     stage('Build Docker image') {
+    stage('Build Docker image') {
     steps {
         script {
             try {
@@ -42,8 +42,8 @@ pipeline {
 
                 // Remove all images
                 sh "docker rmi -f \$(docker images -q)"
-                
-                // Build the Docker image with a version or build number tag
+
+                // Build the Docker image and tag it with the build number
                 sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ."
             } catch (Exception e) {
                 currentBuild.result = 'FAILURE'
