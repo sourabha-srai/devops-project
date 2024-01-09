@@ -53,10 +53,10 @@ pipeline {
             sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
 
             // Tag the Docker image with the build number
-            sh "docker tag ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ${DOCKER_HUB_USER}/${IMAGE_NAME}:latest"
+            sh "docker tag ${DOCKER_HUB_USER}/${IMAGE_NAME} ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
 
             // Push the Docker image
-            sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}:latest"
+            sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER}"
         }
     }
 }
