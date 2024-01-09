@@ -58,8 +58,8 @@ pipeline {
 
 
         stage('Push Docker image to GCR') {
-    steps {
-        script {
+   	 steps {
+        	script {
             // Login to Docker Hub
             sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
 
@@ -71,4 +71,4 @@ pipeline {
         }
     }
 }
-
+}
