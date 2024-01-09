@@ -27,33 +27,31 @@ pipeline {
             }
         }
 
-      stage('Build Docker image') {
-    steps {
-        script {
-            // Make sure Docker is installed on the Jenkins agent
-            try {
-                // Stop all running containers
-                def runningContainers = sh(script: 'docker ps -q', returnStdout: true).trim()
-                if (runningContainers) {
-                    sh "docker stop ${runningContainers}"
+     stage('Build Docker image') {
+            steps {
+                script {
+                    try {
+                        // Stop all running containers
+                        def runningContainers = sh(script: 'docker ps -q', returnStdout: true).trim()
+                        if (runningContainers) {
+                            sh "docker stop ${runningContainers}"
+                        }
+
+                        // Remove all stopped containers
+                        sh "docker container prune -f"
+
+                        // Remove all images
+                        sh "docker rmi -f \$(docker images -q)"
+
+                        // Build the Docker image with a version or build number tag
+                        sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ."
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Docker image build failed: ${e.message}"
+                    }
                 }
-
-                // Remove all stopped containers
-                sh "docker container prune -f"
-
-                // Remove all images
-                sh "docker rmi -f \$(docker images -q)"
-
-                // Build the Docker image
-                sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME} ."
-            } catch (Exception e) {
-                currentBuild.result = 'FAILURE'
-                error "Docker image build failed: ${e.message}"
             }
         }
-    }
-}
-
 
         stage('Push Docker image to GCR') {
             steps {
