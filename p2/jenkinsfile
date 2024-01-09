@@ -40,8 +40,11 @@ pipeline {
                 // Remove all stopped containers
                 sh "docker container prune -f"
 
-                // Remove all images
-                sh "docker rmi -f \$(docker images -q)"
+                // Remove all images if there are any
+                def existingImages = sh(script: 'docker images -q', returnStdout: true).trim()
+                if (existingImages) {
+                    sh "docker rmi -f ${existingImages}"
+                }
 
                 // Build the Docker image and tag it with the build number
                 sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME}:${BUILD_NUMBER} ."
