@@ -23,7 +23,7 @@ pipeline {
         stage('Deploy to GCS') {
             steps {
                 // Copy the WAR file to Google Cloud Storage
-                sh "gsutil cp /var/lib/jenkins/workspace/test1/webapp/target/webapp.war ${GCP_BUCKET}"
+                sh "gsutil cp /var/lib/jenkins/workspace/pipeline1/webapp/target/webapp.war ${GCP_BUCKET}"
             }
         }
     }
