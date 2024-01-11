@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        //IMAGE_NAME = 'devproject'
 		DOCKER_HUB_USER = 'sourabhashettypapt666'
 		DOCKER_HUB_PASSWORD = 'shetty@123'
 		DOCKER_HUB_REGISTRY = 'devproject'
@@ -19,7 +18,7 @@ pipeline {
             }
         }
 
-        stage('Clone GitHub repository') {
+        stage('Clone GitHub repository-Dockerfile') {
             steps {
                 script {
                     git branch: 'main', url: 'https://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@github.com/sourabha-srai/devops-project.git'
@@ -46,14 +45,11 @@ pipeline {
 	}
 
 
-        stage('Push Docker image to GCR') {
+        stage('Push Docker image to DockerHub') {
    	 steps {
         	script {
             // Login to Docker Hub
             sh "docker login -u ${DOCKER_HUB_USER} -p 'shetty@123' docker.io"
-
-            // Tag the Docker image with the build number
-           // sh "docker tag ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY} ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY}:${BUILD_NUMBER}"
 
             // Push the Docker image
             sh "docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY}:${BUILD_NUMBER}"
