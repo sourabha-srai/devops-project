@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    environment {
+        GCP_BUCKET = 'gs://p2bucket/'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Pull source code from GitHub
+                git credentialsId: 'your_github_credentials_id', url: 'https://github.com/sourabha-srai/devops-project.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Build the project using Maven
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Deploy to GCS') {
+            steps {
+                // Copy the WAR file to Google Cloud Storage
+                sh "gsutil cp /var/lib/jenkins/workspace/test1/webapp/target/webapp.war ${GCP_BUCKET}"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded! Your artifacts are deployed to Google Cloud Storage.'
+        }
+        failure {
+            echo 'Pipeline failed! Check the logs for details.'
+        }
+    }
+}
