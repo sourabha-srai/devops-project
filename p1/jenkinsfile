@@ -6,12 +6,12 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Pull source code from GitHub
-                git credentialsId: 'your_github_credentials_id', url: 'https://github.com/sourabha-srai/devops-project.git'
-            }
+       stage('Checkout') {
+        steps {
+            // Pull source code from GitHub (public repository)
+            git 'https://github.com/sourabha-srai/devops-project.git'
         }
+    }
 
         stage('Build') {
             steps {
