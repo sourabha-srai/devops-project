@@ -17,8 +17,8 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the project using Maven
-                //sh 'mvn clean package'
-                sh '/home/sourabhasrai21/apache-maven-3.9.6/bin/mvn clean package'
+                sh 'mvn clean package'
+                //sh '/home/sourabhasrai21/apache-maven-3.9.6/bin/mvn clean package'
             }
         }
 
