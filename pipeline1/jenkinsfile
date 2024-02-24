@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
         steps {
             // Pull source code from GitHub (public repository)
-            git url: 'https://github.com/sourabha-srai/devops-project.git', branch: 'trial'
+            git url: 'https://github.com/sourabha-srai/devops-project.git', branch: 'main'
         }
     }
 
