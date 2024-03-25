@@ -11,10 +11,10 @@ pipeline {
         stage('Pull WAR file from bucket') {
             steps {
                 script {
-		    //sh 'rm -rf /var/lib/jenkins/workspace/p2pipeline/Dockerfile'
-                  //sh 'rm -rf /var/lib/jenkins/workspace/p2pipeline/webapp.war'
-                  //  sh "gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/p2pipeline/"
-		 sh "gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/p2pipeline"
+		    //sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/Dockerfile'
+                  //sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/webapp.war'
+                  //  sh "gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/pipeline2/"
+		 sh "gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/pipeline2"
 
                 }
             }
