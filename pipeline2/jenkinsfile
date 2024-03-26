@@ -18,14 +18,23 @@ pipeline {
                 }
             }
         }
+          stage('Clone GitHub repository-Dockerfile') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'githublogin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+            script {
+                git credentialsId: 'githublogin', url: 'https://github.com/sourabha-srai/devops-project.git'
+            }
+        }
+    }
+}
 
-        stage('Clone GitHub repository-Dockerfile') {
+     /*   stage('Clone GitHub repository-Dockerfile') {
             steps {
                 script {
                     git branch: 'main', url: 'https://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@github.com/sourabha-srai/devops-project.git'
                 }
             }
-        }
+        }*/
 
     stage('Build Docker image') {
             steps {
