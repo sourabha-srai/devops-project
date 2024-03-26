@@ -9,7 +9,7 @@ pipeline {
 stage('Checkout') {
     steps {
         // Define the Git credentials ID
-        def gitCredentialsId = 'githublogin'
+        def gitCredentialsId = 'gitlogin'
 
         // Use withCredentials to securely provide the Git credentials
         withCredentials([usernamePassword(credentialsId: gitCredentialsId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
