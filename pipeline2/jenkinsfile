@@ -3,7 +3,7 @@ pipeline {
 
     environment {
 		DOCKER_HUB_USER = 'sourabhashettypapt666'
-		DOCKER_HUB_PASSWORD = 'shetty@123'
+		// DOCKER_HUB_PASSWORD = 'shetty@123'
 		DOCKER_HUB_REGISTRY = 'devproject'
     }
 
