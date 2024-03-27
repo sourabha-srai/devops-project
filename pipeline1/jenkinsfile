@@ -5,19 +5,21 @@ pipeline {
         GCP_BUCKET = 'gs://p1bucket/'
     }
 
-    stages {
-stage('Checkout') {
-    steps {
-        // Define the Git credentials ID
-        def gitCredentialsId = 'githublogin'
+     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Define the Git credentials ID directly as a string
+                    def gitCredentialsId = 'githublogin'
 
-        // Use withCredentials to securely provide the Git credentials
-        withCredentials([usernamePassword(credentialsId: gitCredentialsId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-            // Pull source code from GitHub using provided credentials
-            git credentialsId: gitCredentialsId, url: 'https://github.com/sourabha-srai/devops-project.git', branch: 'main'
+                    // Use withCredentials to securely provide the Git credentials
+                    withCredentials([usernamePassword(credentialsId: gitCredentialsId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        // Pull source code from GitHub using provided credentials
+                        git credentialsId: gitCredentialsId, url: 'https://github.com/sourabha-srai/devops-project.git', branch: 'main'
+                    }
+                }
+            }
         }
-    }
-}
 
   /* stage('Checkout') {
         steps {
