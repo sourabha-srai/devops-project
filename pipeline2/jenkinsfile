@@ -10,9 +10,9 @@ pipeline {
         stage('Pull WAR file from bucket') {
             steps {
                 script {
-                    // Uncomment cleanup commands if needed
-                    sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/Dockerfile'
-                    sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/webapp.war'
+                    
+                   // sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/Dockerfile'
+                  //  sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/webapp.war'
                     sh 'gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/pipeline2/'
                 }
             }
@@ -60,7 +60,7 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline succeeded! Your Docker image is pushed to Docker Hub.'
+            echo 'Pipeline succeeded!  Docker image is pushed to Docker Hub.'
         }
         failure {
             echo 'Pipeline failed! Check the logs for details.'
