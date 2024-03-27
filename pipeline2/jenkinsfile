@@ -2,70 +2,68 @@ pipeline {
     agent any
 
     environment {
-		DOCKER_HUB_USER = 'sourabhashettypapt666'
-		DOCKER_HUB_REGISTRY = 'devproject'
+        DOCKER_HUB_USER = 'sourabhashettypapt666'
+        DOCKER_HUB_REGISTRY = 'devproject'
     }
 
     stages {
         stage('Pull WAR file from bucket') {
             steps {
                 script {
-		    //sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/Dockerfile'
-                  //sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/webapp.war'
-                  //  sh "gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/pipeline2/"
-		 sh "gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/pipeline2"
-
+                    // Uncomment cleanup commands if needed
+                    sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/Dockerfile'
+                    sh 'rm -rf /var/lib/jenkins/workspace/pipeline2/webapp.war'
+                    sh 'gsutil cp -r gs://p1bucket/*.war /var/lib/jenkins/workspace/pipeline2/'
                 }
             }
         }
-          stage('Clone GitHub repository-Dockerfile') {
-    steps {
-        withCredentials([usernamePassword(credentialsId: 'githublogin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-            script {
-                git credentialsId: 'githublogin', url: 'https://github.com/sourabha-srai/devops-project.git'
+
+        stage('Clone GitHub repository-Dockerfile') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'githublogin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    script {
+                        git credentialsId: 'githublogin', url: 'https://github.com/sourabha-srai/devops-project.git'
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker image') {
+            steps {
+                script {
+                    // Make sure Docker is installed on the Jenkins agent
+                    // Check if there are running containers before attempting to stop them
+                    def runningContainers = sh(script: 'docker ps -q', returnStdout: true).trim()
+                    
+                    if (runningContainers) {
+                        sh "docker stop \$(docker ps -a -q) && docker container prune -f"
+                    }
+        
+                    sh "docker image prune -f"
+                    sh "docker build -t ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY}:${BUILD_NUMBER} ."
+                }
+            }
+        }
+
+        stage('Push Docker image to DockerHub') {
+            steps {
+                script {
+                    echo "Push Docker Image"
+                    withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB_PASSWORD')]) {
+                        sh "docker login -u ${DOCKER_HUB_USER} -p ${DOCKERHUB_PASSWORD}"
+                        sh "docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY}:${BUILD_NUMBER}"
+                    }  
+                }
             }
         }
     }
-}
 
-     /*   stage('Clone GitHub repository-Dockerfile') {
-            steps {
-                script {
-                    git branch: 'main', url: 'https://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@github.com/sourabha-srai/devops-project.git'
-                }
-            }
-        }*/
-
-    stage('Build Docker image') {
-            steps {
-       		script {
-	            // Make sure Docker is installed on the Jenkins agent
-	
-	            // Check if there are running containers before attempting to stop them
-	            def runningContainers = sh(script: 'docker ps -q', returnStdout: true).trim()
-	            
-	            if (runningContainers) {
-	                sh "docker stop \$(docker ps -a -q) && docker container prune -f"
-	            }
-	
-	            sh "docker image prune -f"
-	            sh "docker build -t ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY}:${BUILD_NUMBER} ."
-	        }
-	    }
-	}
-
-
-        stage('Push Docker image to DockerHub') {
-   	 steps {
-				script {
-				    echo "Push Docker Image"
-				    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) 
-				       {
-            				sh "docker login -u sourabhashettypapt666 -p ${dockerhub}"
-					sh "docker push ${DOCKER_HUB_USER}/${DOCKER_HUB_REGISTRY}:${BUILD_NUMBER}"
-				       }  
-   				    }
-		}
-	    }
-  }
+    post {
+        success {
+            echo 'Pipeline succeeded! Your Docker image is pushed to Docker Hub.'
+        }
+        failure {
+            echo 'Pipeline failed! Check the logs for details.'
+        }
+    }
 }
