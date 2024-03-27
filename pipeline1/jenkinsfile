@@ -13,7 +13,7 @@ pipeline {
                     def gitCredentialsId = 'githublogin'
 
                     // Use withCredentials to securely provide the Git credentials
-                    withCredentials([usernamePassword(credentialsId: gitCredentialsId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'githublogin', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         // Pull source code from GitHub using provided credentials
                         git credentialsId: 'githublogin', url: 'https://github.com/sourabha-srai/devops-project.git', branch: 'main'
                     }
