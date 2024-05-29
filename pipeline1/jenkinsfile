@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GCP_BUCKET = 'gs://p1bucket/'
+        GCP_BUCKET = 'gs://p3bucket/'
     }
 
      stages {
