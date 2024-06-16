@@ -10,7 +10,8 @@ pipeline {
         stage('Pull WAR file from bucket') {
             steps {
                 script {
-                    sh 'gsutil cp -r gs://p3bucket/*.war /var/lib/jenkins/jobs/pipeline2/workspace/'
+                    sh 'gsutil cp -r gs://p3bucket/*.war /var/lib/jenkins/workspace/pipeline2/'
+
                 }
             }
         }
